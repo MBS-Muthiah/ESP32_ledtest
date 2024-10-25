@@ -7,7 +7,6 @@ const firebaseConfig = {
   apiKey: "AIzaSyB6JxglAgI9ucG35JegLdatH53GJLdIm9w",
   authDomain: "protoautomation-fe04d.firebaseapp.com",
   projectId: "protoautomation-fe04d",
-  databaseURL:"https://protoautomation-fe04d-default-rtdb.asia-southeast1.firebasedatabase.app/",
   storageBucket: "protoautomation-fe04d.appspot.com",
   messagingSenderId: "337214175670",
   appId: "1:337214175670:web:f24a39883cdcde00c86917"

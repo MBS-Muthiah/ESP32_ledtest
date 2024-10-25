@@ -8,7 +8,6 @@ import { auth } from "./firebase";
 function App() {
   const [fanStatus, setFanStatus] = useState(0);
   const [lightStatus, setLightStatus] = useState(0);
-  const [ledStatus, setLedStatus] = useState(0);  // New state for onboard LED
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -23,12 +22,12 @@ function App() {
     return () => unsubscribe();  // Cleanup listener
   }, []);
 
-  // Write the Fan, Light, and LED states to Firebase
+  // Write the Fan and Light states to Firebase
   const updateDeviceState = (device, state) => {
     set(ref(db, `/${device}`), state);
   };
 
-  // Listen for Fan, Light, and LED state changes from Firebase
+  // Listen for Fan and Light state changes from Firebase
   useEffect(() => {
     if (isAuthenticated) {
       const fanRef = ref(db, "/fan");
@@ -41,12 +40,6 @@ function App() {
       onValue(lightRef, (snapshot) => {
         const data = snapshot.val();
         setLightStatus(data);
-      });
-
-      const ledRef = ref(db, "/led");
-      onValue(ledRef, (snapshot) => {
-        const data = snapshot.val();
-        setLedStatus(data);
       });
     }
   }, [isAuthenticated]);
@@ -70,7 +63,6 @@ function App() {
     <div className="App">
       <h1>ESP32 Device Control</h1>
       <button className="logout-button" onClick={handleLogout}>Sign Out</button>
-      
       <div className="device-control">
         <h2>Fan Control</h2>
         <p>Fan is {fanStatus === 1 ? "ON" : "OFF"}</p>
@@ -81,7 +73,6 @@ function App() {
           Turn OFF
         </button>
       </div>
-
       <div className="device-control">
         <h2>Light Control</h2>
         <p>Light is {lightStatus === 1 ? "ON" : "OFF"}</p>
@@ -89,17 +80,6 @@ function App() {
           Turn ON
         </button>
         <button onClick={() => updateDeviceState("light", 0)} disabled={lightStatus === 0}>
-          Turn OFF
-        </button>
-      </div>
-
-      <div className="device-control">
-        <h2>Onboard LED Control</h2>
-        <p>LED is {ledStatus === 1 ? "ON" : "OFF"}</p>
-        <button onClick={() => updateDeviceState("led", 1)} disabled={ledStatus === 1}>
-          Turn ON
-        </button>
-        <button onClick={() => updateDeviceState("led", 0)} disabled={ledStatus === 0}>
           Turn OFF
         </button>
       </div>
